@@ -9,7 +9,7 @@ public class Ball : MonoBehaviour, ICanCollideWith
     Animator anim;
     Rigidbody2D r_body;
     public GameLevel game_level;
-    public Retro_PlayerController controller;
+    public PlayerController controller;
     private BallMovement ball_movement;
     private LineScript linescript;
     bool IsStuckToPaddle = false;
@@ -91,16 +91,12 @@ public class Ball : MonoBehaviour, ICanCollideWith
                 switch (type)
                 {
                     case bt_YELLOW:
-                        game_level.Change_Score(1);
                         break;
                     case bt_GREEN:
-                        game_level.Change_Score(3);
                         break;
                     case bt_ORANGE:
-                        game_level.Change_Score(5);
                         break;
                     case bt_RED:
-                        game_level.Change_Score(7);
                         break;
                     default:
                         break;

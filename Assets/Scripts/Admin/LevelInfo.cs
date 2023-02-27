@@ -10,12 +10,7 @@ public class LevelInfo
         this.spike_array = new int[112]; // 30, 26, 30, 26
 
         this.item_array = new int[99]; // 11 each row, 9 rows
-
-        this.NeedsAGate = true;
     }
-
-    public bool NeedsAGate;
-
 
 
     //Start TopLeft, Counter-Clockwise

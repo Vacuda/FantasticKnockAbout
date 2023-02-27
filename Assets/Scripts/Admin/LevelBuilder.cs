@@ -7,7 +7,6 @@ public class LevelBuilder : MonoBehaviour
 
 
     public Tilemap _tilemap;
-    public GameObject gate;
     private GameLevel game_level;
     public Sprite[] sprite_array;
 
@@ -45,7 +44,6 @@ public class LevelBuilder : MonoBehaviour
         Build_Floorings(info);
 
         Build_CornerStones();
-        Build_Gate(info);
         Build_Spikes(info);
         Build_Walls(info);
         Build_Items(info);
@@ -58,22 +56,6 @@ public class LevelBuilder : MonoBehaviour
     }
 
     /* BUILDS */
-
-    void Build_Gate(LevelInfo info)
-    {
-        if (info.NeedsAGate)
-        {
-            //full rows
-            for (int x = -18; x <= 11; x++)
-            {
-                //top row, attach to gate
-                MakeBlock(x, 14, true);
-
-                //top row, attach to gate
-                MakeBlock(x, 13, true);
-            }
-        }
-    }
 
     void Build_Floorings(LevelInfo info)
     {
@@ -409,7 +391,7 @@ public class LevelBuilder : MonoBehaviour
         doorway.transform.Find("DoorWay_Volume").GetComponent<DoorWay_Volume>().game_level = game_level;
     }
 
-    void MakeSpike(int x, int y, int rotation, bool IsAttachedToGate = false)
+    void MakeSpike(int x, int y, int rotation)
     {
         //instantiate block
         GameObject spike = Instantiate(PF_Spike);
@@ -426,21 +408,9 @@ public class LevelBuilder : MonoBehaviour
 
         //set rotation
         spike.transform.Rotate(0, 0, rotation);
-
-        //if need to attach to gate
-        if (y==12 && rotation == 180)
-        {
-            spike.transform.parent = gate.transform;
-        }
-
-        //if need to attach to gate
-        if(IsAttachedToGate)
-        {
-            spike.transform.parent = gate.transform;
-        }
     }
 
-    void MakeBlock(int x, int y, bool attachToGate = false)
+    void MakeBlock(int x, int y)
     {
         //instantiate block
         GameObject block = Instantiate(PF_Wall);
@@ -454,11 +424,5 @@ public class LevelBuilder : MonoBehaviour
 
         //set position
         block.transform.position = pos;
-
-        //if need to attach to gate
-        if (attachToGate)
-        {
-            block.transform.parent = gate.transform;
-        }
     }
 }

@@ -5,15 +5,13 @@ using static ot_OBJECTTYPE;
 
 public class Paddle : MonoBehaviour, ICanCollideWith
 {
-    public Retro_PlayerController retro_controller;
+    public PlayerController controller;
 
     public ot_OBJECTTYPE object_type { get; set; }
 
     /* STORAGE MEMBERS */
     float screen_width;
     float screen_height;
-    float retro_min_x_position = -16.625f;
-    float retro_max_x_position = 2.625f;
     float min_x_position = -16.0625f;
     float max_x_position = 10.0625f;
     float min_y_position = -11.0625f;
@@ -28,14 +26,13 @@ public class Paddle : MonoBehaviour, ICanCollideWith
     PlayerControls Controls;
 
     public bool IsSidePaddle = false;
-    public bool IsRetroPaddle = false;
 
     public bool AbleToCatchBall = false;
 
     private void Start()
     {
         //get controls
-        Controls = retro_controller.Get_Controls();
+        Controls = controller.Get_Controls();
 
         //if side paddle
         if (IsSidePaddle)
@@ -51,7 +48,7 @@ public class Paddle : MonoBehaviour, ICanCollideWith
         }
 
         //set object type
-        object_type = IsRetroPaddle ? ot_RETROPADDLE : ot_PADDLE;
+        object_type = ot_PADDLE;
 
         //get screen width
         screen_width = Screen.width; //1920
@@ -66,14 +63,7 @@ public class Paddle : MonoBehaviour, ICanCollideWith
     // Update is called once per frame
     void Update()
     {
-        if (IsRetroPaddle)
-        {
-            Set_PaddlePosition_Retro();
-        }
-        else
-        {
-            Set_PaddlePosition();
-        }
+        Set_PaddlePosition();
     }
 
     void Set_PaddlePosition()
@@ -159,29 +149,6 @@ public class Paddle : MonoBehaviour, ICanCollideWith
         gameObject.transform.position = pos;
     }
 
-    public void Set_PaddlePosition_Retro()
-    {
-        //get mouse_x
-        mouse_x = Controls.RetroGame.Mouse_PointerLocation.ReadValue<Vector2>().x;
-
-        //get new_x
-        new_x = retro_min_x_position + ((mouse_x / (screen_width * 0.75f)) * (retro_max_x_position - retro_min_x_position));
-
-        //clamp, if necessary
-        new_x = Mathf.Clamp(new_x, retro_min_x_position, retro_max_x_position);
-
-        //change position
-        pos.x = new_x;
-    
-        //set new position
-        gameObject.transform.position = pos;
-    }
-
-    public void Destroy_Paddle()
-    {
-        Destroy(gameObject);
-    }
-
     private void OnTriggerEnter2D(Collider2D collider)
     {
         ICanCollideWith collided_object = collider.gameObject.GetComponent<ICanCollideWith>();
@@ -207,7 +174,7 @@ public class Paddle : MonoBehaviour, ICanCollideWith
             {
                 AbleToCatchBall = false;
 
-                retro_controller.Exiting_CatchablePhase(this);
+                controller.Exiting_CatchablePhase(this);
             }
         }
     }

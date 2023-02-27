@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Retro_PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
-
     //place to store controls
     protected PlayerControls Controls;
 
@@ -59,7 +58,7 @@ public class Retro_PlayerController : MonoBehaviour
 
     public void Exiting_CatchablePhase(Paddle paddle)
     {
-        Debug.Log(Time.time - time_stamp_for_button_press);
+        //Debug.Log(Time.time - time_stamp_for_button_press);
 
         if (IsInCatchMode)
         {

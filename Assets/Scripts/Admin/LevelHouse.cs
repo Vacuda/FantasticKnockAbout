@@ -11,16 +11,6 @@ public static class LevelHouse
         Place_Door(info, rank);
         Place_Items(info, rank);
 
-        if(rank == 0)
-        {
-            info.NeedsAGate = true;
-            Remove_TopWallInfo(info);
-        }
-        else
-        {
-            info.NeedsAGate = false;
-        }
-
         return info;
     }
 
@@ -238,13 +228,5 @@ public static class LevelHouse
 
 
     /* UTILITIES*/
-
-    public static void Remove_TopWallInfo(LevelInfo info)
-    {
-        for(int i = 82; i<info.wall_array.Length; i++)
-        {
-            info.wall_array[i] = -1;
-        }
-    }
 
 }

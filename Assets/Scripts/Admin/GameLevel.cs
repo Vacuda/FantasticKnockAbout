@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class GameLevel : MonoBehaviour
 {
-
-    public GameObject gate;
     public Camera cam;
     public GameObject ball;
 
@@ -18,12 +16,6 @@ public class GameLevel : MonoBehaviour
     private FadeInOut LogoScreen_FadeInOut;
 
     public bool bSkipOpening = true;
-    public bool bSkipRetro = false;
-
-    public GameObject Player_1_Score;
-    private Text texter_score;
-    public string text_score;
-    public int game_score = 0;
 
     public GameObject Player_Lives;
     private Text texter_lives_1;
@@ -39,22 +31,18 @@ public class GameLevel : MonoBehaviour
     public GameObject game_over_menu;
     
     private LevelBuilder _level_builder;
-    private MoverBase gate_mover;
     private MoverBase cam_mover;
     private BallMovement ball_movement;
 
     public SoundLab s_lab;
-    public EndRetro_Volume endretro_volume;
 
     bool FrozenDeaths = false;
 
     private void Awake()
     {
-        gate_mover = gate.GetComponent<MoverBase>();
         cam_mover = cam.GetComponent<MoverBase>();
         ball_movement = ball.GetComponent<BallMovement>();
         _level_builder = gameObject.GetComponent<LevelBuilder>();
-        texter_score = Player_1_Score.GetComponent<Text>();
 
         texter_lives_1 = Player_Lives.transform.Find("Num-Back").GetComponent<Text>();
         texter_lives_2 = Player_Lives.transform.Find("Num-Front").GetComponent<Text>();
@@ -127,26 +115,6 @@ public class GameLevel : MonoBehaviour
 
         //store level in persistent game object
         GameStateInfo.Instance.level = info;
-
-        //if rank not zero
-        if (GameStateInfo.Instance.rank > 0)
-        {
-            bSkipRetro = true;
-        }
-
-
-        if (bSkipRetro)
-        {
-            ball.transform.position = new Vector3(-3.0f, -11.0f, 0.0f);
-            cam_mover.InstantChange_ToTargetPosition();
-            endretro_volume.Destroy_ThisVolume();
-        }
-        else
-        {
-            //reset gate
-            gate_mover.InstantChange_ToTargetPosition();
-            gate_mover.Swap_TargetAndStartPositions();
-        }
     }
 
     IEnumerator Sequence_LogoOpening()
@@ -197,13 +165,6 @@ public class GameLevel : MonoBehaviour
         yield break;
     }
 
-    public void Close_Gate()
-    {
-        StartCoroutine(SlowBall());
-
-        gate_mover.Activate_Move();
-    }
-
     public void Trigger_OnDeath()
     {
         StartCoroutine(OnDeath());
@@ -232,40 +193,6 @@ public class GameLevel : MonoBehaviour
         s_lab.PlaySound_Pause();
 
         Time.timeScale = 1;
-    }
-
-    public void Change_Score(int num)
-    {
-        game_score += num;
-        Score_Update();
-    }
-
-    public void Score_Update()
-    {
-        string updated_string;
-
-
-        if(game_score < 10)
-        {
-            updated_string = "00" + game_score.ToString();
-        }
-        else if(game_score < 100)
-        {
-            updated_string = "0" + game_score.ToString();
-        }
-        else if(game_score < 1000)
-        {
-            updated_string = game_score.ToString();
-        }
-        else
-        {
-            updated_string = "999";
-        }
-
-
-
-        texter_score.text = updated_string;
-
     }
 
     public void Lives_Update()
