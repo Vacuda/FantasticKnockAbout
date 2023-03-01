@@ -26,7 +26,7 @@ public class Paddle : MonoBehaviour, ICanCollideWith
     PlayerControls Controls;
 
     public bool IsSidePaddle = false;
-
+    public bool IsTitlePaddle = false;
     public bool AbleToCatchBall = false;
 
     private void Start()
@@ -45,6 +45,11 @@ public class Paddle : MonoBehaviour, ICanCollideWith
         {
             //make new position variable
             pos = new Vector3(0.0f, gameObject.transform.position.y, 0.0f);
+        }
+
+        if (IsTitlePaddle)
+        {
+            max_x_position += 6.0f;
         }
 
         //set object type

@@ -9,26 +9,27 @@ public class GameLevel : MonoBehaviour
     public Camera cam;
     public GameObject ball;
 
-    CanvasGroup BlackScreen_CanvasGroup;
-    public GameObject BlackScreen;
-    public GameObject LogoScreen;
-    private FadeInOut BlackScreen_FadeInOut;
-    private FadeInOut LogoScreen_FadeInOut;
+    //CanvasGroup BlackScreen_CanvasGroup;
+    //public GameObject BlackScreen;
+    //public GameObject LogoScreen;
+    //private FadeInOut BlackScreen_FadeInOut;
+    //private FadeInOut LogoScreen_FadeInOut;
 
-    public bool bSkipOpening = true;
+    //public bool bSkipLogoOpening = true;
+    //public bool bSkipTitleScreen = true;
 
+    public GameObject Burst_Lives;
     public GameObject Player_Lives;
     private Text texter_lives_1;
     private Text texter_lives_2;
 
+    public GameObject Burst_Rank;
     public GameObject Player_Rank;
     private Text texter_rank_1;
     private Text texter_rank_2;
 
-    public GameObject Burst_Rank;
-    public GameObject Burst_Lives;
     public PauseMenu pause_menu;
-    public GameObject game_over_menu;
+    public GameOverMenu game_over_menu;
     
     private LevelBuilder _level_builder;
     private MoverBase cam_mover;
@@ -58,38 +59,35 @@ public class GameLevel : MonoBehaviour
 
     void Start()
     {
+        ////set late references
+        //BlackScreen_CanvasGroup = BlackScreen.GetComponent<CanvasGroup>();
+        //BlackScreen_FadeInOut = BlackScreen.GetComponent<FadeInOut>();
+        //LogoScreen_FadeInOut = LogoScreen.GetComponent<FadeInOut>();
+
         Lives_Update();
         Rank_Update();
-        Check_FirstLoad();
+        StartCoroutine(LoadAndBuild_Level());
+        StartCoroutine(Sequence_LevelStart());
 
-        game_over_menu.GetComponent<MoverBase>().InstantChange_ToTargetPosition();
-
-        //set references
-        BlackScreen_CanvasGroup = BlackScreen.GetComponent<CanvasGroup>();
-        BlackScreen_FadeInOut = BlackScreen.GetComponent<FadeInOut>();
-        LogoScreen_FadeInOut = LogoScreen.GetComponent<FadeInOut>();
+        //Check_FirstLoad();
 
 
 
+        //logo opening
+        //titlescreen
+        //load proper level
 
-
-        if (!bSkipOpening)
-        {
-            //start level opening
-            StartCoroutine(Sequence_LogoOpening());
-        }
-        else
-        {
-            StartCoroutine(Sequence_LevelOpening());
-        }
-
-        StartCoroutine(StartUp());
+        //StartCoroutine(StartUp());
     }
 
-    IEnumerator StartUp()
+
+
+    IEnumerator LoadAndBuild_Level()
     {
         //mini delay
-        yield return new WaitForSeconds(0.01f);
+        yield return new WaitForSeconds(0.05f);
+
+        s_lab.PlaySound_GeneralBlip();
 
         //initialize level
         LevelInfo info;
@@ -115,23 +113,26 @@ public class GameLevel : MonoBehaviour
 
         //store level in persistent game object
         GameStateInfo.Instance.level = info;
+
+        //move camera
+        cam_mover.InstantChange_ToTargetPosition();
     }
 
-    IEnumerator Sequence_LogoOpening()
-    {
-        //set blackscreen full
-        BlackScreen_CanvasGroup.alpha = 1.0f;
+    //IEnumerator Sequence_LogoOpening()
+    //{
+    //    //set blackscreen full
+    //    BlackScreen_CanvasGroup.alpha = 1.0f;
 
-        //fade in logo
-        yield return StartCoroutine(LogoScreen_FadeInOut.Start_FadeInAndOut(1.0f));
+    //    //fade in logo
+    //    yield return StartCoroutine(LogoScreen_FadeInOut.Start_FadeInAndOut(1.0f));
 
-        //fade out blackscreen
-        yield return StartCoroutine(BlackScreen_FadeInOut.Start_Fade(false));
+    //    //fade out blackscreen
+    //    yield return StartCoroutine(BlackScreen_FadeInOut.Start_Fade(false));
 
-        StartCoroutine(Sequence_LevelOpening());
-    }
+    //    //StartCoroutine(Sequence_LevelOpening());
+    //}
 
-    IEnumerator Sequence_LevelOpening()
+    IEnumerator Sequence_LevelStart()
     {
         yield return new WaitForSeconds(1.0f);
 
@@ -142,12 +143,6 @@ public class GameLevel : MonoBehaviour
     }
 
 
-
-
-    public void Entered_EndRetro_Volume()
-    {
-        cam_mover.Activate_Move();
-    }
 
     IEnumerator SlowBall()
     {
@@ -180,7 +175,7 @@ public class GameLevel : MonoBehaviour
         //bring up menu screen
         pause_menu.BringIn_PauseMenu();
 
-        s_lab.PlaySound_Pause();
+        s_lab.PlaySound_GeneralBlip();
 
         Time.timeScale = 0;
     }
@@ -190,7 +185,7 @@ public class GameLevel : MonoBehaviour
         //bring out menu screen
         pause_menu.BringOut_PauseMenu();
 
-        s_lab.PlaySound_Pause();
+        s_lab.PlaySound_GeneralBlip();
 
         Time.timeScale = 1;
     }
@@ -280,24 +275,24 @@ public class GameLevel : MonoBehaviour
         GameStateInfo.Instance.rank = 0;
         GameStateInfo.Instance.lives_remaining = 5;
         GameStateInfo.Instance.level = null;
-        game_over_menu.GetComponent<MoverBase>().Move_In();
+        game_over_menu.BringIn_GameOverMenu();
         s_lab.PlaySound_GameOver();
 
     }
 
-    void Check_FirstLoad()
-    {
-        //if first load
-        if (GameStateInfo.Instance.IsFirstLoad == true)
-        {
-            GameStateInfo.Instance.IsFirstLoad = false;
-        }
-        //if NOT first load
-        else
-        {
-            bSkipOpening = true;
-            //bSkipRetro = true;
-        }
-    }
+    //void Check_FirstLoad()
+    //{
+    //    //if first load
+    //    if (GameStateInfo.Instance.IsFirstLoad == true)
+    //    {
+    //        GameStateInfo.Instance.IsFirstLoad = false;
+    //    }
+    //    //if NOT first load
+    //    else
+    //    {
+    //        //bSkipOpening = true;
+    //        bSkipTitleScreen = true;
+    //    }
+    //}
 
 }

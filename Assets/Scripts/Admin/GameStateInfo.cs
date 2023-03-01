@@ -10,6 +10,7 @@ public class GameStateInfo : MonoBehaviour
     public LevelInfo level;
 
     public bool IsFirstLoad = true;
+    public int paddle_size = 2;
 
 
 

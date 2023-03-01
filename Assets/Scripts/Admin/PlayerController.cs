@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour
     private float time_stamp_for_button_press;
     public Ball ball;
 
-    public Paddle[] paddle_array;
     private bool IsPaused = false;
 
     /*ADMIN FUNCTIONS*/
@@ -88,7 +87,7 @@ public class PlayerController : MonoBehaviour
         ball.Release_Ball();
     }
 
-    void OnAnyButton_Pressed()
+    public virtual void OnAnyButton_Pressed()
     {
 
         if (IsPaused)
@@ -125,5 +124,4 @@ public class PlayerController : MonoBehaviour
     {
         Controls.Disable();
     }
-
 }

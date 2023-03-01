@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PauseMenu : MonoBehaviour
+public class GameOverMenu : MonoBehaviour
 {
     MoverBase mover;
 
@@ -11,18 +11,15 @@ public class PauseMenu : MonoBehaviour
     void Start()
     {
         mover = gameObject.GetComponent<MoverBase>();
-        mover.InstantChange_ToTargetPosition();
     }
 
-    public void BringIn_PauseMenu()
+    public void BringIn_GameOverMenu()
     {
-        mover.Move_In();
+        mover.Set_In();
     }
 
-    public void BringOut_PauseMenu()
+    public void BringOut_GameOverMenu()
     {
         mover.Move_Out();
     }
-
-
 }

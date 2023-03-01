@@ -28,7 +28,7 @@ public class SoundLab : MonoBehaviour
         a_source.PlayOneShot(clip_array[2], Random.Range(0.1f, 0.5f));
     }
 
-    public void PlaySound_Pause()
+    public void PlaySound_GeneralBlip()
     {
         a_source.PlayOneShot(clip_array[3]);
     }

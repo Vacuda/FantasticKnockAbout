@@ -9,6 +9,7 @@ public class Ball : MonoBehaviour, ICanCollideWith
     Animator anim;
     Rigidbody2D r_body;
     public GameLevel game_level;
+    public SoundLab s_lab;
     public PlayerController controller;
     private BallMovement ball_movement;
     private LineScript linescript;
@@ -65,7 +66,7 @@ public class Ball : MonoBehaviour, ICanCollideWith
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        game_level.s_lab.PlaySound_Hit();
+        s_lab.PlaySound_Hit();
 
         ICanCollideWith collided_object = collision.gameObject.GetComponent<ICanCollideWith>();
 
@@ -133,7 +134,7 @@ public class Ball : MonoBehaviour, ICanCollideWith
 
     public void Stick_ToThisPaddle(Paddle paddle)
     {
-        game_level.s_lab.PlaySound_Grab();
+        s_lab.PlaySound_Grab();
 
         IsStuckToPaddle = true;
         ball_movement.Stop_Ball(true);
@@ -200,7 +201,7 @@ public class Ball : MonoBehaviour, ICanCollideWith
         if (IsStuckToPaddle)
         {
 
-            game_level.s_lab.PlaySound_Release();
+            s_lab.PlaySound_Release();
             IsStuckToPaddle = false;
             ball_movement.Stop_Ball(false);
             gameObject.transform.parent = null;

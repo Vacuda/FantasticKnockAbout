@@ -29,8 +29,8 @@ public class MoverBase : MonoBehaviour
     {
         StartPosition = gameObject.transform.position;
         TargetPosition = new Vector3(target_x, target_y, target_z);
-        InsidePosition = gameObject.transform.position;
-        OutsidePosition = new Vector3(target_x, target_y, target_z);
+        OutsidePosition = gameObject.transform.position;
+        InsidePosition = new Vector3(target_x, target_y, target_z);
 
         //Debug.Log("inside" + InsidePosition);
         //Debug.Log("out" + OutsidePosition);
@@ -118,7 +118,7 @@ public class MoverBase : MonoBehaviour
         StartPosition = TargetPosition;
         TargetPosition = temp;
     }
-    public void Move_In()
+    public void Set_In()
     {
         TargetPosition = InsidePosition;
         StartPosition = OutsidePosition;
